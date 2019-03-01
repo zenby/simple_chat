@@ -75,6 +75,9 @@
     const messages = document.querySelector('#messages');
     const userID = Date.now();
     const socketEvents = {
+      CONNECTION: 'connection',
+      DISCONNECT: 'disconnect',
+      INIT: 'init',
       MESSAGE: 'message',
       CLEAR: 'clear'
     };
@@ -91,7 +94,8 @@
         socket.emit(socketEvents.MESSAGE, {
           message: messageInput.value,
           username: userInput.value,
-          userID: userID
+          userID: userID,
+          time: getTime()
         });
         messageInput.value = '';
       }
@@ -101,17 +105,29 @@
       socket.emit(socketEvents.CLEAR);
     }
 
-    socket.on(socketEvents.MESSAGE, data => {
+    function getTime() {
+      return new Date().toLocaleTimeString(undefined, { hour12: false });
+    }
+
+    socket.emit(socketEvents.INIT);
+    socket.on(socketEvents.INIT, messages => {
+      messages.forEach(message => showMessageFromServer(message));
+    });
+
+    function showMessageFromServer(data) {
       const li = document.createElement('li');
       if (data.userID === userID) {
         li.classList.add('self_message');
       }
-      const { username, message } = data;
-      const time = new Date().toLocaleTimeString(undefined, { hour12: false });
+      const { username, message, time } = data;
       li.innerHTML =
         `<span class="username">${username}: ${time}</span>` + `${message}`;
       messages.appendChild(li);
       li.scrollIntoView(true);
+    }
+
+    socket.on(socketEvents.MESSAGE, data => {
+      showMessageFromServer(data);
     });
 
     socket.on(socketEvents.CLEAR, data => {
