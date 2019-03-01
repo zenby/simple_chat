@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello world</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      font-size: 13px;
+    }
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    input {
+      padding: 10px;
+      flex: 1;
+      min-width: 100px;
+    }
+    .input-container {
+      display: flex;
+    }
+    span.username {
+      font-size: 0.8rem;
+      color: rgb(133, 131, 131);
+      padding-right: 20px;
+    }
+    #send-button {
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+      text-align: center;
+    }
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    #messages li {
+      padding: 5px 10px;
+    }
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+  <body>
+    <div class="input-container">
+      <input class="user_input" placeholder="username" />
+      <input class="message_input" placeholder="message" />
+      <button id="send-button">Send</button>
+    </div>
+    <ul id="messages"></ul>
+  </body>
+  <script>
+    var socket = io();
+    var button = document.querySelector('#send-button');
+    var messageInput = document.querySelector('.message_input');
+    var userInput = document.querySelector('.user_input');
+    var messages = document.querySelector('#messages');
+
+    button.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      if (messageInput.value) {
+        socket.emit('message', {
+          message: messageInput.value,
+          username: userInput.value
+        });
+        messageInput.value = '';
+      }
+    }
+
+    socket.on('message', function(data) {
+      var li = document.createElement('li');
+
+      const { username, message } = data;
+      li.innerHTML = `<span class="username">${username}</span>` + message;
+      messages.appendChild(li);
+    });
+  </script>
+</html>
