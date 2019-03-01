@@ -6,6 +6,8 @@ app.get('/', function(req, res) {
   res.sendfile('index.html');
 });
 
+const PORT = process.env.PORT || 3000;
+
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
   console.log('A user connected');
@@ -21,6 +23,6 @@ io.on('connection', function(socket) {
   });
 });
 
-http.listen(3000, function() {
-  console.log('listening on *:3000');
+http.listen(PORT, function() {
+  console.log(`listening on *:${PORT}`);
 });
