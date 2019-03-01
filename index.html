@@ -14,14 +14,18 @@
     }
     body {
       font: 13px Helvetica, Arial;
+      margin-bottom: 50px;
     }
 
     input {
       padding: 10px;
-      flex: 1;
       min-width: 100px;
     }
     .input-container {
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
       display: flex;
     }
     span.username {
@@ -43,8 +47,14 @@
     #messages li {
       padding: 5px 10px;
     }
-    #messages li:nth-child(odd) {
-      background: #eee;
+    #messages li.self_message {
+      background: rgb(225, 241, 255);
+    }
+    .user_input {
+      flex: 1;
+    }
+    .message_input {
+      flex: 3;
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
@@ -63,6 +73,7 @@
     var messageInput = document.querySelector('.message_input');
     var userInput = document.querySelector('.user_input');
     var messages = document.querySelector('#messages');
+    var userID = Date.now();
 
     button.addEventListener('click', sendMessage);
     messageInput.addEventListener('keydown', ev => {
@@ -75,7 +86,8 @@
       if (messageInput.value) {
         socket.emit('message', {
           message: messageInput.value,
-          username: userInput.value
+          username: userInput.value,
+          userID: userID
         });
         messageInput.value = '';
       }
@@ -83,10 +95,15 @@
 
     socket.on('message', function(data) {
       var li = document.createElement('li');
-
       const { username, message } = data;
-      li.innerHTML = `<span class="username">${username}</span>` + message;
+      if (data.userID === userID) {
+        li.classList.add('self_message');
+      }
+      var time = new Date().toLocaleTimeString(undefined, { hour12: false });
+      li.innerHTML =
+        `<span class="username">${username}: ${time}</span>` + `${message}`;
       messages.appendChild(li);
+      li.scrollIntoView(true);
     });
   </script>
 </html>

@@ -18,8 +18,12 @@ io.on('connection', function(socket) {
   });
 
   socket.on('message', function(data) {
-    const { message, username } = data;
-    io.sockets.emit('message', { message, username: username || 'Anonymous' });
+    const { message, username, userID } = data;
+    io.sockets.emit('message', {
+      message,
+      userID,
+      username: username || 'Anonymous'
+    });
   });
 });
 
