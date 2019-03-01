@@ -68,12 +68,16 @@
     <ul id="messages"></ul>
   </body>
   <script>
-    var socket = io();
-    var button = document.querySelector('#send-button');
-    var messageInput = document.querySelector('.message_input');
-    var userInput = document.querySelector('.user_input');
-    var messages = document.querySelector('#messages');
-    var userID = Date.now();
+    const socket = io();
+    const button = document.querySelector('#send-button');
+    const messageInput = document.querySelector('.message_input');
+    const userInput = document.querySelector('.user_input');
+    const messages = document.querySelector('#messages');
+    const userID = Date.now();
+    const socketEvents = {
+      MESSAGE: 'message',
+      CLEAR: 'clear'
+    };
 
     button.addEventListener('click', sendMessage);
     messageInput.addEventListener('keydown', ev => {
@@ -84,7 +88,7 @@
 
     function sendMessage() {
       if (messageInput.value) {
-        socket.emit('message', {
+        socket.emit(socketEvents.MESSAGE, {
           message: messageInput.value,
           username: userInput.value,
           userID: userID
@@ -93,17 +97,25 @@
       }
     }
 
-    socket.on('message', function(data) {
-      var li = document.createElement('li');
-      const { username, message } = data;
+    function clearChat() {
+      socket.emit(socketEvents.CLEAR);
+    }
+
+    socket.on(socketEvents.MESSAGE, data => {
+      const li = document.createElement('li');
       if (data.userID === userID) {
         li.classList.add('self_message');
       }
-      var time = new Date().toLocaleTimeString(undefined, { hour12: false });
+      const { username, message } = data;
+      const time = new Date().toLocaleTimeString(undefined, { hour12: false });
       li.innerHTML =
         `<span class="username">${username}: ${time}</span>` + `${message}`;
       messages.appendChild(li);
       li.scrollIntoView(true);
+    });
+
+    socket.on(socketEvents.CLEAR, data => {
+      messages.innerHTML = '';
     });
   </script>
 </html>

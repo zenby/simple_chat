@@ -8,11 +8,9 @@ app.get('/', function(req, res) {
 
 const PORT = process.env.PORT || 3000;
 
-//Whenever someone connects this gets executed
 io.on('connection', function(socket) {
   console.log('A user connected');
 
-  //Whenever someone disconnects this piece of code executed
   socket.on('disconnect', function() {
     console.log('A user disconnected');
   });
@@ -24,6 +22,10 @@ io.on('connection', function(socket) {
       userID,
       username: username || 'Anonymous'
     });
+  });
+
+  socket.on('clear', function() {
+    io.sockets.emit('clear');
   });
 });
 
