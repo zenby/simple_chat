@@ -147,8 +147,10 @@
       const { roomID } = data;
       const user = data.userID === userID ? "You've" : 'New user';
       const li = document.createElement('li');
-      li.innerHTML = `<span class="small-text">
-          ${user} joined ${getRoomName(roomID)}</span>`;
+      const span = document.createElement('span');
+      span.classList.add('small-text');
+      span.textContent = `${user} joined ${getRoomName(roomID)}`;
+      li.appendChild(span);
       messages.appendChild(li);
       li.scrollIntoView(true);
     });
@@ -163,11 +165,12 @@
         li.classList.add('self_message');
       }
       const { username, message, time, roomID } = data;
-
-      li.innerHTML =
-        `<span class="small-text">
-          ${username}: ${time} ${getRoomName(roomID)}
-          </span>` + message;
+      const span = document.createElement('span');
+      span.classList.add('small-text');
+      span.textContent = `${username}: ${time} ${getRoomName(roomID)}`;
+      const text = document.createTextNode(message);
+      li.appendChild(span);
+      li.appendChild(text);
       messages.appendChild(li);
       li.scrollIntoView(true);
     }
