@@ -89,7 +89,15 @@
     const messages = document.querySelector('#messages');
     const roomInput = document.querySelector('.room_container>select');
 
-    const userID = Date.now();
+    let userID;
+    const storageName = 'sessionStorage';
+    if (window[storageName].userID) {
+      userID = window[storageName].userID;
+    } else {
+      userID = Date.now();
+      window[storageName].userID = userID;
+    }
+
     const socketEvents = {
       CONNECTION: 'connection',
       DISCONNECT: 'disconnect',
