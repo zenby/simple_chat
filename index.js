@@ -14,7 +14,8 @@ const socketEvents = {
   DISCONNECT: 'disconnect',
   INIT: 'init',
   MESSAGE: 'message',
-  CLEAR: 'clear'
+  CLEAR: 'clear',
+  JOIN_ROOM: 'join room'
 };
 const DEFAULT_USERNAME = 'Anonymous';
 
@@ -30,19 +31,29 @@ io.on(socketEvents.CONNECTION, function(socket) {
   });
 
   socket.on(socketEvents.MESSAGE, function(data) {
-    const { message, username, userID, time } = data;
+    const { message, username, userID, time, roomID } = data;
     const messageData = {
       message,
       userID,
+      roomID,
       time,
       username: username || DEFAULT_USERNAME
     };
-    io.sockets.emit(socketEvents.MESSAGE, messageData);
-    storage.addToStore(messageData);
+    if (roomID === '0') {
+      io.sockets.emit(socketEvents.MESSAGE, messageData);
+      storage.addToStore(messageData);
+    } else {
+      io.sockets.to(roomID).emit(socketEvents.MESSAGE, messageData);
+    }
   });
 
   socket.on(socketEvents.CLEAR, function() {
     io.sockets.emit(socketEvents.CLEAR);
+  });
+
+  socket.on(socketEvents.JOIN_ROOM, function(data) {
+    socket.join(data.roomID);
+    io.sockets.to(data.roomID).emit(socketEvents.JOIN_ROOM, data);
   });
 });
 

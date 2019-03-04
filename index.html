@@ -28,7 +28,7 @@
       left: 0;
       display: flex;
     }
-    span.username {
+    span.small-text {
       font-size: 0.8rem;
       color: rgb(133, 131, 131);
       padding-right: 20px;
@@ -56,6 +56,12 @@
     .message_input {
       flex: 3;
     }
+    .room_container {
+      display: inline;
+      position: fixed;
+      right: 0;
+      top: 0;
+    }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 
@@ -65,6 +71,14 @@
       <input class="message_input" placeholder="message" />
       <button id="send-button">Send</button>
     </div>
+    <div class="room_container">
+      <select>
+        <option value="0">Main room</option>
+        <option value="1">Room 1</option>
+        <option value="2">Room 2</option>
+        <option value="3">Room 3</option>
+      </select>
+    </div>
     <ul id="messages"></ul>
   </body>
   <script>
@@ -73,16 +87,22 @@
     const messageInput = document.querySelector('.message_input');
     const userInput = document.querySelector('.user_input');
     const messages = document.querySelector('#messages');
+    const roomInput = document.querySelector('.room_container>select');
+
     const userID = Date.now();
     const socketEvents = {
       CONNECTION: 'connection',
       DISCONNECT: 'disconnect',
       INIT: 'init',
       MESSAGE: 'message',
-      CLEAR: 'clear'
+      CLEAR: 'clear',
+      JOIN_ROOM: 'join room'
     };
 
     button.addEventListener('click', sendMessage);
+    roomInput.addEventListener('change', ev => {
+      socket.emit(socketEvents.JOIN_ROOM, { userID, roomID: roomInput.value });
+    });
     messageInput.addEventListener('keydown', ev => {
       if (ev.key === 'Enter') {
         sendMessage();
@@ -94,6 +114,7 @@
         socket.emit(socketEvents.MESSAGE, {
           message: messageInput.value,
           username: userInput.value,
+          roomID: roomInput.value,
           userID: userID,
           time: getTime()
         });
@@ -114,14 +135,29 @@
       messages.forEach(message => showMessageFromServer(message));
     });
 
+    socket.on(socketEvents.JOIN_ROOM, data => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="small-text">
+          You've joined ${getRoomName(data.roomID)}</span>`;
+      messages.appendChild(li);
+      li.scrollIntoView(true);
+    });
+
+    function getRoomName(roomID) {
+      return roomID === '0' ? 'Main room' : `Room ${roomID}`;
+    }
+
     function showMessageFromServer(data) {
       const li = document.createElement('li');
       if (data.userID === userID) {
         li.classList.add('self_message');
       }
-      const { username, message, time } = data;
+      const { username, message, time, roomID } = data;
+
       li.innerHTML =
-        `<span class="username">${username}: ${time}</span>` + `${message}`;
+        `<span class="small-text">
+          ${username}: ${time} ${getRoomName(roomID)}
+          </span>` + message;
       messages.appendChild(li);
       li.scrollIntoView(true);
     }
