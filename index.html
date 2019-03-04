@@ -144,9 +144,11 @@
     });
 
     socket.on(socketEvents.JOIN_ROOM, data => {
+      const { roomID } = data;
+      const user = data.userID === userID ? "You've" : 'New user';
       const li = document.createElement('li');
       li.innerHTML = `<span class="small-text">
-          You've joined ${getRoomName(data.roomID)}</span>`;
+          ${user} joined ${getRoomName(roomID)}</span>`;
       messages.appendChild(li);
       li.scrollIntoView(true);
     });
