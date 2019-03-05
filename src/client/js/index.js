@@ -67,13 +67,8 @@ socket.on(eventType.INIT, messages => {
 socket.on(eventType.JOIN_ROOM, data => {
   const { roomID } = data;
   const user = data.userID === userID ? "You've" : 'New user';
-  const li = document.createElement('li');
-  const span = document.createElement('span');
-  span.classList.add('small-text');
-  span.textContent = `${user} joined ${getRoomName(roomID)}`;
-  li.appendChild(span);
-  messages.appendChild(li);
-  li.scrollIntoView(true);
+  const text = `${user} joined ${getRoomName(roomID)}`;
+  drawText(text);
 });
 
 function getRoomName(roomID) {
@@ -98,10 +93,15 @@ function showMessageFromServer(data) {
 
 function showMeActionMessage(data) {
   const { message, username } = data;
+  const text = `${username} ${message}`;
+  drawText(text);
+}
+
+function drawText(text) {
   const li = document.createElement('li');
   const span = document.createElement('span');
   span.classList.add('small-text');
-  span.textContent = `${username} ${message}`;
+  span.textContent = text;
   li.appendChild(span);
   messages.appendChild(li);
   li.scrollIntoView(true);
