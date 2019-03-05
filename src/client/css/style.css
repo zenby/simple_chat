@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 13px;
+}
+body {
+  font: 13px Helvetica, Arial;
+  margin-bottom: 50px;
+}
+
+input {
+  padding: 10px;
+  min-width: 100px;
+}
+.input-container {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+}
+span.small-text {
+  font-size: 0.8rem;
+  color: rgb(133, 131, 131);
+  padding-right: 20px;
+}
+#send-button {
+  background: rgb(130, 224, 255);
+  border: none;
+  padding: 10px;
+  text-align: center;
+}
+#messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#messages li {
+  padding: 5px 10px;
+}
+#messages li.self_message {
+  background: rgb(225, 241, 255);
+}
+.user_input {
+  flex: 1;
+}
+.message_input {
+  flex: 3;
+}
+.room_container {
+  display: inline;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
