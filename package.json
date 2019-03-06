@@ -5,9 +5,10 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./dist/server.js",
-    "watch": "nodemon ./dist/server.js",
     "heroku-postbuild": "npm run buildProd",
     "heroku:logs": "heroku logs --tail",
+    "dev": "npm run buildDev && npm run start",
+    "prod": "npm run buildProd && npm run start",
     "buildDev": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "buildProd": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js"
   },
