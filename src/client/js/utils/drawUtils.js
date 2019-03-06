@@ -1,4 +1,4 @@
-import { changePageTitleIfNotFocused } from './windowUtils';
+import { handleNotFocusedPage } from './windowUtils';
 
 const messages = document.querySelector('#messages');
 
@@ -17,7 +17,7 @@ export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
   }
   messages.appendChild(li);
   li.scrollIntoView(true);
-  changePageTitleIfNotFocused();
+  handleNotFocusedPage();
 }
 
 export function drawSmallText(smallText) {

@@ -3,6 +3,7 @@ const title = {
   FOCUSED: 'Chat',
   NOT_FOCUSED: '* Chat'
 };
+const audio = document.querySelector('audio');
 
 export function getUserIDFromStorage() {
   let userID;
@@ -15,9 +16,10 @@ export function getUserIDFromStorage() {
   return userID;
 }
 
-export function changePageTitleIfNotFocused() {
+export function handleNotFocusedPage() {
   if (!document.hasFocus()) {
     document.title = title.NOT_FOCUSED;
+    audio.play();
   }
 }
 

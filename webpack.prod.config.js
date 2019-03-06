@@ -52,6 +52,14 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif|ico)$/,
         use: [{ loader: 'url-loader' }]
+      },
+      {
+        test: /\.(wav)$/,
+        include: /client/,
+        query: {
+          name: 'media/[name].[ext]'
+        },
+        loader: 'file-loader'
       }
     ]
   },

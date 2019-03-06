@@ -42,9 +42,12 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(png|svg|jpg|gif|ico)$/,
+        test: /\.(png|svg|jpg|gif|ico|wav)$/,
         include: /client/,
-        use: ['file-loader']
+        query: {
+          name: 'media/[name].[ext]'
+        },
+        loader: 'file-loader'
       }
     ]
   },
