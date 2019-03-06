@@ -8,9 +8,13 @@ const userInput = document.querySelector('.user_input');
 const messages = document.querySelector('#messages');
 const roomInput = document.querySelector('.room_container>select');
 
-let userID;
+const title = {
+  FOCUSED: 'Chat',
+  NOT_FOCUSED: '* Chat'
+};
 const storageName = 'sessionStorage';
-if (window[storageName].userID) {
+let userID;
+if (window[storageName] && window[storageName].userID) {
   userID = window[storageName].userID;
 } else {
   userID = Date.now();
@@ -53,7 +57,7 @@ socket.on(eventType.INIT, messages => {
   messages.forEach(data => {
     switch (data.event) {
       case eventType.MESSAGE:
-        showMessageFromServer(data);
+        showMessageFromUser(data);
         break;
       case eventType.ME_ACTION:
         showMeActionMessage(data);
@@ -75,7 +79,7 @@ function getRoomName(roomID) {
   return roomID === '0' ? 'Main room' : `Room ${roomID}`;
 }
 
-function showMessageFromServer(data) {
+function showMessageFromUser(data) {
   const li = document.createElement('li');
   if (data.userID === userID) {
     li.classList.add('self_message');
@@ -89,7 +93,18 @@ function showMessageFromServer(data) {
   li.appendChild(text);
   messages.appendChild(li);
   li.scrollIntoView(true);
+  changePageTitleIfNotFocused();
 }
+
+function changePageTitleIfNotFocused() {
+  if (!document.hasFocus()) {
+    document.title = title.NOT_FOCUSED;
+  }
+}
+
+window.addEventListener('focus', () => {
+  document.title = title.FOCUSED;
+});
 
 function showMeActionMessage(data) {
   const { message, username } = data;
@@ -105,9 +120,10 @@ function drawText(text) {
   li.appendChild(span);
   messages.appendChild(li);
   li.scrollIntoView(true);
+  changePageTitleIfNotFocused();
 }
 
-socket.on(eventType.MESSAGE, showMessageFromServer);
+socket.on(eventType.MESSAGE, showMessageFromUser);
 socket.on(eventType.ME_ACTION, showMeActionMessage);
 
 socket.on(eventType.CLEAR, data => {
