@@ -1,5 +1,5 @@
 export function getRoomName(roomID) {
-  return roomID === '0' ? 'Main room' : `Room ${roomID}`;
+  return roomID === '0' ? '' : `Room ${roomID}`;
 }
 
 export function getTime() {
