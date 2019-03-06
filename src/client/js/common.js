@@ -1,3 +1,5 @@
+// this file is common to server part
+
 export const eventType = {
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
