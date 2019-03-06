@@ -17,5 +17,5 @@ There vere used several basic libraries such as `socket.io` and `express` for ba
 
 #### Screenshots
 
-<img alt="User 1 screen" src="./screenshots/1.png">
-<img alt="User 2 screen" src="./screenshots/2.png">
+<img alt="User 1 screen" src="./screenshots/1.PNG">
+<img alt="User 2 screen" src="./screenshots/2.PNG">
