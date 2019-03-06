@@ -33,7 +33,6 @@ function changeFavicon(src) {
   const newLink = document.createElement('link');
   const oldLink = document.querySelector('link[rel="shortcut icon"]');
 
-  newLink.id = 'dynamic-favicon';
   newLink.rel = 'shortcut icon';
   newLink.href = src;
   if (oldLink) {
