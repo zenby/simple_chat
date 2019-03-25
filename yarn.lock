@@ -3127,11 +3127,6 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
-linkify@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/linkify/-/linkify-0.2.1.tgz#a1b66435eae0495ed1b34143277c4b09c14cad73"
-  integrity sha1-obZkNergSV7Rs0FDJ3xLCcFMrXM=
-
 linkifyjs@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/linkifyjs/-/linkifyjs-2.1.8.tgz#2bee2272674dc196cce3740b8436c43df2162f9c"
