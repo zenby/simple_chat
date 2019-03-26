@@ -3,6 +3,8 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+//   .BundleAnalyzerPlugin;
 
 module.exports = {
   entry: { main: './src/index.js' },
@@ -73,5 +75,6 @@ module.exports = {
       filename: '[name].css',
       chunkFilename: '[id].css'
     })
+    // new BundleAnalyzerPlugin()
   ]
 };
