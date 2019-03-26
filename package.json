@@ -37,6 +37,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.29.6",
     "webpack-bundle-analyzer": "^3.1.0",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-middleware": "^3.6.0",
     "webpack-hot-middleware": "^2.24.3",
     "webpack-node-externals": "^1.7.2"
