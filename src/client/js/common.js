@@ -7,5 +7,6 @@ export const eventType = {
   MESSAGE: 'message',
   CLEAR: 'clear',
   JOIN_ROOM: 'join room',
-  ME_ACTION: 'me action'
+  ME_ACTION: 'me action',
+  UPDATE_USERS: 'users'
 };

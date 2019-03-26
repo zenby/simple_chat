@@ -18,6 +18,7 @@ const button = document.querySelector('#send-button');
 const messageInput = document.querySelector('.message_input');
 const userInput = document.querySelector('.user_input');
 const roomInput = document.querySelector('.room_container>select');
+const usersList = document.querySelector('.users');
 
 const userID = getUserIDFromStorage();
 
@@ -37,7 +38,7 @@ activatePageTitleChangingAfterFocus();
 socket.emit(eventType.INIT);
 
 function sendUserMessage() {
-  if (messageInput.value) {
+  if (messageInput.value && userInput.value) {
     socket.emit(eventType.MESSAGE, {
       message: messageInput.value,
       username: userInput.value,
@@ -74,8 +75,18 @@ function showStyledUserMessage(data) {
   showUserMessage(data, userID);
 }
 
+function updateUsers(users) {
+  usersList.innerHTML = '';
+  const listItems = users.map(user => {
+    const li = document.createElement('li');
+    li.textContent = user.username;
+    usersList.appendChild(li);
+  });
+}
+
 socket.on(eventType.INIT, handleUserInit);
 socket.on(eventType.JOIN_ROOM, showJoinRoomMessage);
 socket.on(eventType.MESSAGE, showStyledUserMessage);
 socket.on(eventType.ME_ACTION, showMeActionMessage);
 socket.on(eventType.CLEAR, clearChat);
+socket.on(eventType.UPDATE_USERS, updateUsers);

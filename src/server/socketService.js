@@ -1,13 +1,21 @@
 import { eventType } from '../client/js/common';
-import { store, addToStore } from './store';
+import { store, addToStore, users, addToUsers, removeFromUsers } from './store';
 
 const DEFAULT_USERNAME = 'Anonymous';
 
 export const initializeSocketHandler = (socket, io) => {
+  const updateUsers = () => {
+    io.sockets.emit(eventType.UPDATE_USERS, users);
+  };
+
   console.log('A user connected');
+  addToUsers(socket.id, DEFAULT_USERNAME);
+  updateUsers();
 
   socket.on(eventType.DISCONNECT, function() {
     console.log('A user disconnected');
+    removeFromUsers(socket.id);
+    updateUsers();
   });
 
   socket.on(eventType.INIT, function(data) {
@@ -23,6 +31,9 @@ export const initializeSocketHandler = (socket, io) => {
       time,
       username: username || DEFAULT_USERNAME
     };
+
+    addToUsers(socket.id, username);
+    updateUsers();
 
     const ME_MARKER = '/me ';
     let responceEvent;

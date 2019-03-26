@@ -5,11 +5,14 @@
   </head>
   <body>
     <div class="input-container">
-      <input class="user_input" placeholder="username" />
+      <input class="user_input" placeholder="username" value="Anonymous" />
       <input class="message_input" placeholder="message" />
       <button id="send-button">Send</button>
     </div>
     <div class="room_container">
+      Current users:
+      <ol class="users"></ol>
+      <div>Current room:</div>
       <select>
         <option value="0">Main room</option>
         <option value="1">Room 1</option>
