@@ -11,5 +11,6 @@ export function showUserMessage(data, userID) {
   const { username, message, time, roomID } = data;
   const smallText = `${username}: ${time} ${getRoomName(roomID)}`;
   const isUserMessage = data.userID === userID;
+
   drawSmallTextWithMessage(smallText, message, isUserMessage);
 }
