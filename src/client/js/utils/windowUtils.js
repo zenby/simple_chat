@@ -6,7 +6,9 @@ const title = {
   FOCUSED: 'Chat',
   NOT_FOCUSED: '* Chat'
 };
-const audio = document.querySelector('audio');
+const defaultAudio = document.querySelector('.tink');
+const owlAudio = document.querySelector('.owl');
+const isOwlCheckbox = document.querySelector('.audio');
 
 export function getUserIDFromStorage() {
   let userID;
@@ -21,7 +23,7 @@ export function getUserIDFromStorage() {
 
 export function handleNotFocusedPage() {
   if (!document.hasFocus()) {
-    audio.play();
+    isOwlCheckbox.checked ? owlAudio.play() : defaultAudio.play();
     if (document.title !== title.NOT_FOCUSED) {
       document.title = title.NOT_FOCUSED;
       changeFavicon(notFocusedSource);

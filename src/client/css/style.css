@@ -55,3 +55,6 @@ span.small-text {
   right: 0;
   top: 0;
 }
+.audio {
+  min-width: 0;
+}
