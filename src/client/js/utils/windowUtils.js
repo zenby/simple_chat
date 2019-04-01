@@ -21,6 +21,20 @@ export function getUserIDFromStorage() {
   return userID;
 }
 
+export function updateUserNameInStorage(name) {
+  if (window[storageName]) {
+    window[storageName].name = name;
+  }
+}
+
+export function getUserName() {
+  let name = 'Anonymous';
+  if (window[storageName] && window[storageName].name) {
+    name = window[storageName].name;
+  }
+  return name;
+}
+
 export function handleNotFocusedPage() {
   if (!document.hasFocus()) {
     isOwlCheckbox.checked ? owlAudio.play() : defaultAudio.play();

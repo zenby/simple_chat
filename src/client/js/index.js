@@ -5,7 +5,9 @@ import { getRoomName, getTime } from './utils/stringUtils';
 import { showMeActionMessage, showUserMessage } from './actions';
 import {
   getUserIDFromStorage,
-  activatePageTitleChangingAfterFocus
+  activatePageTitleChangingAfterFocus,
+  getUserName,
+  updateUserNameInStorage
 } from './utils/windowUtils';
 import {
   drawSmallTextWithMessage,
@@ -21,6 +23,7 @@ const roomInput = document.querySelector('.room_container>select');
 const usersList = document.querySelector('.users');
 
 const userID = getUserIDFromStorage();
+userInput.value = getUserName();
 
 button.addEventListener('click', sendUserMessage);
 roomInput.addEventListener('change', ev => {
@@ -33,6 +36,9 @@ messageInput.addEventListener('keydown', ev => {
   if (ev.key === 'c' && ev.ctrlKey && ev.altKey) {
     socket.emit(eventType.CLEAR);
   }
+});
+userInput.addEventListener('change', ev => {
+  updateUserNameInStorage(ev.target.value);
 });
 activatePageTitleChangingAfterFocus();
 socket.emit(eventType.INIT);
