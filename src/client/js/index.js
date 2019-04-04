@@ -7,7 +7,8 @@ import {
   getUserIDFromStorage,
   activatePageTitleChangingAfterFocus,
   getUserName,
-  updateUserNameInStorage
+  updateUserNameInStorage,
+  saveUsernameOnExit
 } from './utils/windowUtils';
 import {
   drawSmallTextWithMessage,
@@ -40,6 +41,10 @@ messageInput.addEventListener('keydown', ev => {
 userInput.addEventListener('change', ev => {
   updateUserNameInStorage(ev.target.value);
 });
+window.addEventListener('beforeunload', () => {
+  saveUsernameOnExit(userInput.value);
+});
+
 activatePageTitleChangingAfterFocus();
 socket.emit(eventType.INIT);
 
