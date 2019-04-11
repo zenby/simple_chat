@@ -1,9 +1,15 @@
-import { eventType } from '../client/js/common';
-import { store, addToStore, users, addToUsers, removeFromUsers } from './store';
+const eventType = require('../client/js/common');
+const {
+  store,
+  users,
+  addToStore,
+  addToUsers,
+  removeFromUsers
+} = require('./store');
 
 const DEFAULT_USERNAME = 'Anonymous';
 
-export const initializeSocketHandler = (socket, io) => {
+const initializeSocketHandler = (socket, io) => {
   const updateUsers = () => {
     io.sockets.emit(eventType.UPDATE_USERS, users);
   };
@@ -61,3 +67,5 @@ export const initializeSocketHandler = (socket, io) => {
     io.sockets.to(data.roomID).emit(eventType.JOIN_ROOM, data);
   });
 };
+
+module.exports = initializeSocketHandler;

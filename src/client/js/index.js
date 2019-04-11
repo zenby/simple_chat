@@ -1,6 +1,6 @@
-import io from 'socket.io-client';
+const eventType = require('./common');
 
-import { eventType } from './common';
+import io from 'socket.io-client';
 import { getRoomName, getTime } from './utils/stringUtils';
 import { showMeActionMessage, showUserMessage } from './actions';
 import {

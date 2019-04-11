@@ -4,13 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node ./dist/server.js",
+    "start": "set NODE_ENV=production&& node src/server/server.js",
+    "start:dev": "set NODE_ENV=development&& nodemon src/server/server.js",
     "heroku-postbuild": "npm run buildProd",
     "heroku:logs": "heroku logs --tail",
-    "dev": "npm run buildDev && npm run start",
+    "dev": "npm run buildDev && npm run start:dev",
     "prod": "npm run buildProd && npm run start",
-    "buildDev": "webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
-    "buildProd": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js"
+    "buildDev": "webpack --mode development --config webpack.dev.config.js",
+    "buildProd": "webpack --mode production --config webpack.prod.config.js"
   },
   "author": "zenby",
   "license": "ISC",

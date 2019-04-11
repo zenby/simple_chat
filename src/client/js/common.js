@@ -1,6 +1,6 @@
 // this file is common to server part
 
-export const eventType = {
+const eventType = {
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
   INIT: 'init',
@@ -10,3 +10,5 @@ export const eventType = {
   ME_ACTION: 'me action',
   UPDATE_USERS: 'users'
 };
+
+module.exports = eventType;
