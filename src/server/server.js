@@ -21,12 +21,12 @@ if (isDev) {
 
   app.use(webpackDevMiddleware(compiler, pathConfig));
   app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(express.static(path.resolve('./dist')));
+  app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./dist/index.html'));
+  });
 }
-
-app.use(express.static(path.resolve('./dist')));
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('./dist/index.html'));
-});
 
 const PORT = process.env.PORT || 3000;
 
