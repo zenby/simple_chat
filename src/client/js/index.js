@@ -16,15 +16,16 @@ import {
   clearChat
 } from './utils/drawUtils';
 
-const socket = io();
+const userInput = document.querySelector('.user_input');
+userInput.value = getUserName();
+const query = `username=${userInput.value}`;
+const socket = io(window.location.origin, { query });
 const button = document.querySelector('#send-button');
 const messageInput = document.querySelector('.message_input');
-const userInput = document.querySelector('.user_input');
 const roomInput = document.querySelector('.room_container>select');
 const usersList = document.querySelector('.users');
 
 const userID = getUserIDFromStorage();
-userInput.value = getUserName();
 
 button.addEventListener('click', sendUserMessage);
 roomInput.addEventListener('change', ev => {

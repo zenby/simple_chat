@@ -1,27 +1,22 @@
 const eventType = require('../client/js/common');
-const {
-  store,
-  users,
-  addToStore,
-  addToUsers,
-  removeFromUsers
-} = require('./store');
-
+const { store, addToStore, addToUsers, removeFromUsers } = require('./store');
 const DEFAULT_USERNAME = 'Anonymous';
+let users = [];
 
 const initializeSocketHandler = (socket, io) => {
-  const updateUsers = () => {
+  const sendUpdatedUsers = () => {
     io.sockets.emit(eventType.UPDATE_USERS, users);
   };
 
   console.log('A user connected');
-  addToUsers(socket.id, DEFAULT_USERNAME);
-  updateUsers();
+  const name = socket.handshake.query.username || DEFAULT_USERNAME;
+  users = addToUsers(users, socket.id, name);
+  sendUpdatedUsers();
 
   socket.on(eventType.DISCONNECT, function() {
     console.log('A user disconnected');
-    removeFromUsers(socket.id);
-    updateUsers();
+    users = removeFromUsers(users, socket.id);
+    sendUpdatedUsers();
   });
 
   socket.on(eventType.INIT, function(data) {
@@ -38,8 +33,8 @@ const initializeSocketHandler = (socket, io) => {
       username: username || DEFAULT_USERNAME
     };
 
-    addToUsers(socket.id, username);
-    updateUsers();
+    users = addToUsers(users, socket.id, username);
+    sendUpdatedUsers();
 
     const ME_MARKER = '/me ';
     let responceEvent;
