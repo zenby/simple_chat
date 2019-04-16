@@ -1,9 +1,11 @@
-import { handleNotFocusedPage } from './windowUtils';
 import linkifyStr from 'linkifyjs/string';
 import { find } from 'linkifyjs/lib/linkify';
+import { handleNotFocusedPage } from './windowUtils';
 import { checkImage } from './imageUtils';
+import { getStyledImage } from './modalUtils';
 
 const messages = document.querySelector('#messages');
+const usersList = document.querySelector('.users');
 
 export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
   const li = document.createElement('li');
@@ -43,16 +45,19 @@ export function clearChat() {
   messages.innerHTML = '';
 }
 
-function success() {
-  console.log('success: ', this.src);
+export function drawOnlineUsers(users) {
+  usersList.innerHTML = '';
+  const listItems = users.map(user => {
+    const li = document.createElement('li');
+    li.textContent = user.username;
+    usersList.appendChild(li);
+  });
 }
 
 function drawImage(parent, link) {
-  const image = document.createElement('img');
   const br = document.createElement('br');
-  image.src = link;
-  image.style.width = '100px';
-  image.style.height = '100px';
+  const image = getStyledImage(link);
+
   parent.appendChild(br);
   parent.appendChild(image);
 }
