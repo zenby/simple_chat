@@ -21,10 +21,13 @@ export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
     links.forEach(({ href, value }) => {
       checkImage(href, () => {
         drawImage(li, href);
-        message = message.replace(value, '');
-        messageContent.innerHTML = linkifyStr(message);
+        if (value) {
+          message = message.replace(value, '');
+          messageContent.innerHTML = linkifyStr(message);
+        }
       });
     });
+    messageContent.innerHTML = linkifyStr(message);
   }
   messages.appendChild(li);
   li.scrollIntoView(true);
