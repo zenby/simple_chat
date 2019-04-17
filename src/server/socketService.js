@@ -38,7 +38,7 @@ const initializeSocketHandler = (socket, io) => {
 
     const ME_MARKER = '/me ';
     let responceEvent;
-    if (message.startsWith(ME_MARKER)) {
+    if (message && message.startsWith(ME_MARKER)) {
       responceEvent = eventType.ME_ACTION;
       messageData.message = messageData.message.replace(ME_MARKER, '');
     } else {

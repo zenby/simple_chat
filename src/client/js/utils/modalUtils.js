@@ -1,7 +1,7 @@
 const modal = document.getElementById('modal');
 const modalImg = document.getElementById('modal_img');
-const captionText = document.getElementById('caption');
 const close = document.querySelector('span.close');
+const messages = document.querySelector('#messages');
 
 function closeModal() {
   modal.style.display = 'none';
@@ -14,10 +14,13 @@ export function getImageBySource(href) {
   const image = document.createElement('img');
   image.src = href;
   image.classList.add('user_image');
-  image.onclick = function() {
-    modal.style.display = 'block';
-    modalImg.src = this.src;
-    captionText.innerHTML = this.alt;
-  };
+
   return image;
 }
+
+messages.addEventListener('click', ev => {
+  if (ev.target.tagName === 'IMG') {
+    modal.style.display = 'flex';
+    modalImg.src = ev.target.src;
+  }
+});
