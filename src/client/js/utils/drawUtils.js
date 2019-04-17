@@ -2,7 +2,8 @@ import linkifyStr from 'linkifyjs/string';
 import { find } from 'linkifyjs/lib/linkify';
 import { handleNotFocusedPage } from './windowUtils';
 import { checkImage } from './imageUtils';
-import { getStyledImage } from './modalUtils';
+import { getImageBySource } from './modalUtils';
+import { base64ImageRegExp } from '../constants';
 
 const messages = document.querySelector('#messages');
 const usersList = document.querySelector('.users');
@@ -17,23 +18,35 @@ export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
   messageInfo.textContent = smallText;
   li.appendChild(messageInfo);
   if (message) {
-    const messageContent = document.createElement('span');
-    const links = find(message);
-    li.appendChild(messageContent);
-    links.forEach(({ href, value }) => {
-      checkImage(href, () => {
-        drawImage(li, href);
-        if (value) {
-          message = message.replace(value, '');
-          messageContent.innerHTML = linkifyStr(message);
-        }
-      });
-    });
-    messageContent.innerHTML = linkifyStr(message);
+    addMessageToElement(li, message);
   }
   messages.appendChild(li);
   li.scrollIntoView(true);
   handleNotFocusedPage();
+}
+
+function addMessageToElement(element, message) {
+  const messageContent = document.createElement('span');
+  const base64ImageMatches = message.match(base64ImageRegExp);
+  const urls = find(message);
+  element.appendChild(messageContent);
+
+  if (base64ImageMatches) {
+    base64ImageMatches.forEach(base64ImageSource => {
+      drawImage(element, base64ImageSource);
+      message = message.replace(base64ImageSource, '');
+    });
+  }
+
+  urls.forEach(url => {
+    const imageSource = url.href;
+    checkImage(imageSource, () => {
+      drawImage(element, imageSource);
+      message = message.replace(url.value, '');
+      messageContent.innerHTML = linkifyStr(message);
+    });
+  });
+  messageContent.innerHTML = linkifyStr(message);
 }
 
 export function drawSmallText(smallText) {
@@ -54,9 +67,9 @@ export function drawOnlineUsers(users) {
   });
 }
 
-function drawImage(parent, link) {
+function drawImage(parent, source) {
   const br = document.createElement('br');
-  const image = getStyledImage(link);
+  const image = getImageBySource(source);
 
   parent.appendChild(br);
   parent.appendChild(image);

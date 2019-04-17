@@ -5,8 +5,7 @@
 // or has failed to load in the past.
 export function checkImage(url, success) {
   var img = new Image(), // the
-    loaded = false,
-    errored = false;
+    loaded = false;
 
   // Run only once, when `loaded` is false. If `success` is a function, it is called with `img` as the context.
   img.onload = function() {

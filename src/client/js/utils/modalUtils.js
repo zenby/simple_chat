@@ -10,7 +10,7 @@ function closeModal() {
 close.onclick = closeModal;
 modal.onclick = closeModal;
 
-export function getStyledImage(href) {
+export function getImageBySource(href) {
   const image = document.createElement('img');
   image.src = href;
   image.classList.add('user_image');

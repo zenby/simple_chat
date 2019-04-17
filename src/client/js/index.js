@@ -1,6 +1,7 @@
 const eventType = require('./common');
 
 import io from 'socket.io-client';
+import { base64ImageRegExp } from './constants';
 import { getRoomName, getTime } from './utils/stringUtils';
 import { showMeActionMessage, showUserMessage } from './actions';
 import {
@@ -49,10 +50,10 @@ window.addEventListener('beforeunload', () => {
 activatePageTitleChangingAfterFocus();
 socket.emit(eventType.INIT);
 
-function sendUserMessage() {
-  if (messageInput.value && userInput.value) {
+function sendUserMessage(message) {
+  if ((messageInput.value || message) && userInput.value) {
     socket.emit(eventType.MESSAGE, {
-      message: messageInput.value,
+      message: message || messageInput.value,
       username: userInput.value,
       roomID: roomInput.value,
       userID: userID,
@@ -86,6 +87,26 @@ function showJoinRoomMessage(data) {
 function showStyledUserMessage(data) {
   showUserMessage(data, userID);
 }
+
+document.onpaste = function(event) {
+  const items = event.clipboardData.items;
+  for (const index in items) {
+    const item = items[index];
+    if (item.kind === 'file') {
+      const blob = item.getAsFile();
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        if (base64ImageRegExp.test(ev.target.result)) {
+          const message = messageInput.value
+            ? messageInput.value + ev.target.result
+            : ev.target.result;
+          sendUserMessage(message);
+        }
+      };
+      reader.readAsDataURL(blob);
+    }
+  }
+};
 
 socket.on(eventType.INIT, handleUserInit);
 socket.on(eventType.JOIN_ROOM, showJoinRoomMessage);
