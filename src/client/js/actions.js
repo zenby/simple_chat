@@ -11,6 +11,11 @@ export function showUserMessage(data, userID) {
   const { username, message, time, roomID } = data;
   const smallText = `${username}: ${time} ${getRoomName(roomID)}`;
   const isUserMessage = data.userID === userID;
-
   drawSmallTextWithMessage(smallText, message, isUserMessage);
+}
+
+export function showUserJoinRoomMessage(data, userID) {
+  const user = data.userID === userID ? "You've" : 'New user';
+  const smallText = `${user} joined ${getRoomName(data.roomID)}`;
+  drawSmallText(smallText);
 }

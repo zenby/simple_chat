@@ -3,14 +3,13 @@ const eventType = require('./common');
 import io from 'socket.io-client';
 import { base64ImageRegExp } from './constants';
 import { getRoomName, getTime } from './utils/stringUtils';
-import { showMeActionMessage, showUserMessage } from './actions';
+import { getUserIDFromStorage } from './utils/storageUtils';
+import { initializeEventListeners, getUsernameQuery } from './initialize';
 import {
-  getUserIDFromStorage,
-  activatePageTitleChangingAfterFocus,
-  getUserName,
-  updateUserNameInStorage,
-  saveUsernameOnExit
-} from './utils/windowUtils';
+  showMeActionMessage,
+  showUserMessage,
+  showUserJoinRoomMessage
+} from './actions';
 import {
   drawSmallTextWithMessage,
   drawSmallText,
@@ -18,19 +17,21 @@ import {
   clearChat
 } from './utils/drawUtils';
 
+initializeEventListeners();
+
+const socket = io(window.location.origin, { query: getUsernameQuery() });
 const userInput = document.querySelector('.user_input');
-userInput.value = getUserName();
-const query = `username=${userInput.value}`;
-const socket = io(window.location.origin, { query });
-const button = document.querySelector('#send-button');
+const sendButton = document.querySelector('#send-button');
 const messageInput = document.querySelector('.message_input');
 const roomInput = document.querySelector('.room_container>select');
-
 const userID = getUserIDFromStorage();
 
-button.addEventListener('click', sendUserMessage);
-roomInput.addEventListener('change', ev => {
-  socket.emit(eventType.JOIN_ROOM, { userID, roomID: roomInput.value });
+sendButton.addEventListener('click', () => {
+  sendUserMessage();
+});
+roomInput.addEventListener('change', () => {
+  const data = { userID, roomID: roomInput.value };
+  socket.emit(eventType.JOIN_ROOM, data);
 });
 messageInput.addEventListener('keydown', ev => {
   if (ev.key === 'Enter') {
@@ -40,14 +41,7 @@ messageInput.addEventListener('keydown', ev => {
     socket.emit(eventType.CLEAR);
   }
 });
-userInput.addEventListener('change', ev => {
-  updateUserNameInStorage(ev.target.value);
-});
-window.addEventListener('beforeunload', () => {
-  saveUsernameOnExit(userInput.value);
-});
 
-activatePageTitleChangingAfterFocus();
 socket.emit(eventType.INIT);
 
 function sendUserMessage(message) {
@@ -67,7 +61,7 @@ function handleUserInit(storeDataArray) {
   storeDataArray.forEach(data => {
     switch (data.event) {
       case eventType.MESSAGE:
-        showStyledUserMessage(data);
+        showMessage(data);
         break;
       case eventType.ME_ACTION:
         showMeActionMessage(data);
@@ -79,12 +73,10 @@ function handleUserInit(storeDataArray) {
 }
 
 function showJoinRoomMessage(data) {
-  const user = data.userID === userID ? "You've" : 'New user';
-  const smallText = `${user} joined ${getRoomName(data.roomID)}`;
-  drawSmallText(smallText);
+  showUserJoinRoomMessage(data, userID);
 }
 
-function showStyledUserMessage(data) {
+function showMessage(data) {
   showUserMessage(data, userID);
 }
 
@@ -110,7 +102,7 @@ document.onpaste = function(event) {
 
 socket.on(eventType.INIT, handleUserInit);
 socket.on(eventType.JOIN_ROOM, showJoinRoomMessage);
-socket.on(eventType.MESSAGE, showStyledUserMessage);
+socket.on(eventType.MESSAGE, showMessage);
 socket.on(eventType.ME_ACTION, showMeActionMessage);
 socket.on(eventType.CLEAR, clearChat);
 socket.on(eventType.UPDATE_USERS, drawOnlineUsers);

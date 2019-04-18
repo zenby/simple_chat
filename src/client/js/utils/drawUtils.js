@@ -1,8 +1,7 @@
 import linkifyStr from 'linkifyjs/string';
 import { find } from 'linkifyjs/lib/linkify';
 import { handleNotFocusedPage } from './windowUtils';
-import { checkImage } from './imageUtils';
-import { getImageBySource } from './modalUtils';
+import { checkImage, getImageBySource } from './imageUtils';
 import { base64ImageRegExp } from '../constants';
 
 const messages = document.querySelector('#messages');
@@ -18,14 +17,14 @@ export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
   messageInfo.textContent = smallText;
   li.appendChild(messageInfo);
   if (message) {
-    addMessageToElement(li, message);
+    addMessageToElement(message, li);
   }
   messages.appendChild(li);
   li.scrollIntoView(true);
   handleNotFocusedPage();
 }
 
-function addMessageToElement(element, message) {
+function addMessageToElement(message, element) {
   const messageContent = document.createElement('span');
   const base64ImageMatches = message.match(base64ImageRegExp);
   const urls = find(message);
