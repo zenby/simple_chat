@@ -25,21 +25,22 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        // Loads the javacript into html template provided.
-        // Entry point is set below in HtmlWebPackPlugin in Plugins
         test: /\.html$/,
         include: /client/,
         use: [
           {
             loader: 'html-loader'
-            //options: { minimize: true }
           }
         ]
       },
       {
-        test: /\.css$/,
+        test: /\.scss$/,
         include: /client/,
-        use: ['style-loader', 'css-loader']
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'sass-loader' // compiles Sass to CSS, using Node Sass by default
+        ]
       },
       {
         test: /\.(png|svg|jpg|gif|ico|wav)$/,

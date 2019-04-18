@@ -20,7 +20,7 @@ module.exports = {
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: false // set to true if you want JS source maps
+        sourceMap: false
       }),
       new OptimizeCSSAssetsPlugin({})
     ]
@@ -35,21 +35,16 @@ module.exports = {
         }
       },
       {
-        // Loads the javacript into html template provided.
-        // Entry point is set below in HtmlWebPackPlugin in Plugins
         test: /\.html$/,
         use: [
           {
             loader: 'html-loader'
-            // options: { minimize: true }
           }
         ]
       },
       {
-        // Loads CSS into a file when you import it via Javascript
-        // Rules are set in MiniCssExtractPlugin
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
+        test: /\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
         test: /\.(png|svg|jpg|gif|ico)$/,

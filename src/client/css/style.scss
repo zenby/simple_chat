@@ -42,14 +42,14 @@ span.small-text {
   list-style-type: none;
   margin: 0;
   padding: 0;
-}
 
-#messages li {
-  padding: 5px 10px;
-}
+  & li {
+    padding: 5px 10px;
 
-#messages li.self_message {
-  background: rgb(225, 241, 255);
+    &.self_message {
+      background: rgb(225, 241, 255);
+    }
+  }
 }
 
 .user_input {
@@ -77,10 +77,10 @@ span.small-text {
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s;
-}
 
-.user_image:hover {
-  opacity: 0.7;
+  &:hover {
+    opacity: 0.7;
+  }
 }
 
 .modal {
@@ -94,10 +94,10 @@ span.small-text {
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.9);
-}
 
-.modal :hover {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .modal_content {
@@ -138,11 +138,11 @@ span.small-text {
   font-size: 40px;
   font-weight: bold;
   transition: 0.3s;
-}
 
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
+  &:hover,
+  &:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
