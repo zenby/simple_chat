@@ -3,7 +3,7 @@ export function getUserIDFromStorage() {
   if (window.sessionStorage.userID) {
     userID = window.sessionStorage.userID;
   } else {
-    userID = Date.now();
+    userID = Date.now().toString();
     window.sessionStorage.userID = userID;
   }
   return userID;
