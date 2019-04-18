@@ -1,5 +1,5 @@
 const eventType = require('../client/js/common');
-const { store, addToStore, addToUsers, removeFromUsers } = require('./store');
+const { store, addToStore, updateUsers, removeFromUsers } = require('./store');
 const DEFAULT_USERNAME = 'Anonymous';
 let users = [];
 
@@ -8,13 +8,15 @@ const initializeSocketHandler = (socket, io) => {
     io.sockets.emit(eventType.UPDATE_USERS, users);
   };
 
-  console.log('A user connected');
   const name = socket.handshake.query.username || DEFAULT_USERNAME;
-  users = addToUsers(users, socket.id, name);
+  console.log(`A user ${name} is connected`);
+  users = updateUsers(users, socket.id, name);
   sendUpdatedUsers();
 
   socket.on(eventType.DISCONNECT, function() {
-    console.log('A user disconnected');
+    const user = users.find(user => user.id === socket.id);
+    const username = user ? user.username : DEFAULT_USERNAME;
+    console.log(`A user ${username} is disconnected`);
     users = removeFromUsers(users, socket.id);
     sendUpdatedUsers();
   });
@@ -24,32 +26,26 @@ const initializeSocketHandler = (socket, io) => {
   });
 
   socket.on(eventType.MESSAGE, function(data) {
-    const { message, username, userID, time, roomID } = data;
-    const messageData = {
-      message,
-      userID,
-      roomID,
-      time,
-      username: username || DEFAULT_USERNAME
-    };
+    const { message, roomID, username } = data;
+    const messageData = { ...data, username: username || DEFAULT_USERNAME };
 
-    users = addToUsers(users, socket.id, username);
+    users = updateUsers(users, socket.id, username);
     sendUpdatedUsers();
 
-    const ME_MARKER = '/me ';
-    let responceEvent;
-    if (message && message.startsWith(ME_MARKER)) {
-      responceEvent = eventType.ME_ACTION;
-      messageData.message = messageData.message.replace(ME_MARKER, '');
+    const ME_MARKERS = ['/me ', '.ьу '];
+    let responseEvent;
+    if (message && ME_MARKERS.some(marker => message.startsWith(marker))) {
+      responseEvent = eventType.ME_ACTION;
+      messageData.message = message.substring(4);
     } else {
-      responceEvent = eventType.MESSAGE;
+      responseEvent = eventType.MESSAGE;
     }
 
     if (roomID === '0') {
-      io.sockets.emit(responceEvent, messageData);
-      addToStore({ ...messageData, event: responceEvent });
+      io.sockets.emit(responseEvent, messageData);
+      addToStore({ ...messageData, event: responseEvent });
     } else {
-      io.sockets.to(roomID).emit(responceEvent, messageData);
+      io.sockets.to(roomID).emit(responseEvent, messageData);
     }
   });
 

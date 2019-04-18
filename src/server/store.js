@@ -8,7 +8,7 @@ const addToStore = data => {
   }
 };
 
-const addToUsers = (users, id, username) => {
+const updateUsers = (users, id, username) => {
   const findedUser = users.find(user => user.id === id);
 
   if (findedUser) {
@@ -26,6 +26,6 @@ const removeFromUsers = (users, id) => {
 module.exports = {
   store: store,
   addToStore: addToStore,
-  addToUsers: addToUsers,
+  updateUsers: updateUsers,
   removeFromUsers: removeFromUsers
 };
