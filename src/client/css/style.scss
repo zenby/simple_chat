@@ -83,6 +83,16 @@ span.small-text {
   }
 }
 
+.delete_icon {
+  width: 16px;
+  height: 16px;
+
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+}
+
 .modal {
   display: none;
   position: fixed;

@@ -14,7 +14,8 @@ import {
   drawSmallTextWithMessage,
   drawSmallText,
   drawOnlineUsers,
-  clearChat
+  clearChat,
+  removeSavedMessage
 } from './utils/drawUtils';
 
 initializeEventListeners();
@@ -30,8 +31,12 @@ sendButton.addEventListener('click', () => {
   sendUserMessage();
 });
 roomInput.addEventListener('change', () => {
-  const data = { userID, roomID: roomInput.value };
+  clearChat();
+  const data = { userID, roomID: roomInput.value, username: userInput.value };
   socket.emit(eventType.JOIN_ROOM, data);
+  if (roomInput.value === '0') {
+    socket.emit(eventType.INIT);
+  }
 });
 messageInput.addEventListener('keydown', ev => {
   if (ev.key === 'Enter') {
@@ -100,9 +105,14 @@ document.onpaste = function(event) {
   }
 };
 
+export function emitRemoveSavedMessage(id) {
+  socket.emit(eventType.REMOVE_SAVED_MESSAGE, id);
+}
+
 socket.on(eventType.INIT, handleUserInit);
 socket.on(eventType.JOIN_ROOM, showJoinRoomMessage);
 socket.on(eventType.MESSAGE, showMessage);
 socket.on(eventType.ME_ACTION, showMeActionMessage);
 socket.on(eventType.CLEAR, clearChat);
 socket.on(eventType.UPDATE_USERS, drawOnlineUsers);
+socket.on(eventType.REMOVE_SAVED_MESSAGE, removeSavedMessage);

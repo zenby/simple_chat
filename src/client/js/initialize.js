@@ -5,6 +5,7 @@ import {
   updateUserNameInStorage
 } from './utils/storageUtils';
 import { closeModal, modalPopupOnImageClick } from './utils/modalUtils';
+import { emitRemoveSavedMessage } from './index';
 
 const userInput = document.querySelector('.user_input');
 const close = document.querySelector('span.close');
@@ -23,6 +24,14 @@ export function initializeEventListeners() {
   });
 
   messages.addEventListener('click', modalPopupOnImageClick);
+  messages.addEventListener('click', ev => {
+    if (
+      ev.target.tagName === 'IMG' &&
+      ev.target.classList.contains('delete_icon')
+    ) {
+      emitRemoveSavedMessage(ev.target.parentNode.dataset.id);
+    }
+  });
   close.onclick = closeModal;
   modal.onclick = closeModal;
 

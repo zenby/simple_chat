@@ -1,4 +1,10 @@
 const eventType = require('../client/js/common');
+const {
+  addSavedMessage,
+  getSavedMessages,
+  removeSavedMessage
+} = require('./firebase');
+
 const { store, addToStore, updateUsers, removeFromUsers } = require('./store');
 const DEFAULT_USERNAME = 'Anonymous';
 let users = [];
@@ -45,7 +51,17 @@ const initializeSocketHandler = (socket, io) => {
       io.sockets.emit(responseEvent, messageData);
       addToStore({ ...messageData, event: responseEvent });
     } else {
-      io.sockets.to(roomID).emit(responseEvent, messageData);
+      if (roomID === '1') {
+        addSavedMessage({ ...messageData, event: eventType.MESSAGE }).then(
+          ({ name }) => {
+            io.sockets
+              .to(roomID)
+              .emit(eventType.MESSAGE, { ...messageData, id: name });
+          }
+        );
+      } else {
+        io.sockets.to(roomID).emit(responseEvent, messageData);
+      }
     }
   });
 
@@ -53,7 +69,18 @@ const initializeSocketHandler = (socket, io) => {
     io.sockets.emit(eventType.CLEAR);
   });
 
+  socket.on(eventType.REMOVE_SAVED_MESSAGE, function(id) {
+    removeSavedMessage(id);
+    io.sockets.to('1').emit(eventType.REMOVE_SAVED_MESSAGE, id);
+  });
+
   socket.on(eventType.JOIN_ROOM, function(data) {
+    if (data.roomID === '1') {
+      getSavedMessages().then(savedMessages => {
+        socket.emit(eventType.INIT, savedMessages);
+      });
+    }
+
     socket.join(data.roomID);
     io.sockets.to(data.roomID).emit(eventType.JOIN_ROOM, data);
   });

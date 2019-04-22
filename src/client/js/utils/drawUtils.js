@@ -7,10 +7,18 @@ import { base64ImageRegExp } from '../constants';
 const messages = document.querySelector('#messages');
 const usersList = document.querySelector('.users');
 
-export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
+export function drawSmallTextWithMessage(
+  smallText,
+  message,
+  id,
+  isUserMessage
+) {
   const li = document.createElement('li');
   if (isUserMessage) {
     li.classList.add('self_message');
+  }
+  if (id) {
+    addDeleteIconToElement(id, li);
   }
   const messageInfo = document.createElement('span');
   messageInfo.classList.add('small-text');
@@ -22,6 +30,14 @@ export function drawSmallTextWithMessage(smallText, message, isUserMessage) {
   messages.appendChild(li);
   li.scrollIntoView(true);
   handleNotFocusedPage();
+}
+
+function addDeleteIconToElement(id, element) {
+  const deleteIcon = document.createElement('img');
+  deleteIcon.classList.add('delete_icon');
+  deleteIcon.src = '../media/delete.svg';
+  element.dataset.id = id;
+  element.appendChild(deleteIcon);
 }
 
 function addMessageToElement(message, element) {
@@ -72,4 +88,9 @@ function drawImage(parent, source) {
 
   parent.appendChild(br);
   parent.appendChild(image);
+}
+
+export function removeSavedMessage(id) {
+  const li = [].find.call(messages.childNodes, li => li.dataset.id === id);
+  messages.removeChild(li);
 }

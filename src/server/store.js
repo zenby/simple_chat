@@ -1,5 +1,5 @@
 const store = [];
-const MAX_STORE_LENGTH = 10;
+const MAX_STORE_LENGTH = 20;
 
 const addToStore = data => {
   store.push(data);
@@ -24,8 +24,8 @@ const removeFromUsers = (users, id) => {
 };
 
 module.exports = {
-  store: store,
-  addToStore: addToStore,
-  updateUsers: updateUsers,
-  removeFromUsers: removeFromUsers
+  store,
+  addToStore,
+  updateUsers,
+  removeFromUsers
 };

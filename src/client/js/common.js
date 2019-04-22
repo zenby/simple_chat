@@ -1,13 +1,14 @@
 // this file is common to server part
 
 const eventType = {
+  CLEAR: 'clear',
   CONNECTION: 'connection',
   DISCONNECT: 'disconnect',
+  JOIN_ROOM: 'join room',
   INIT: 'init',
   MESSAGE: 'message',
-  CLEAR: 'clear',
-  JOIN_ROOM: 'join room',
   ME_ACTION: 'me action',
+  REMOVE_SAVED_MESSAGE: 'remove message',
   UPDATE_USERS: 'users'
 };
 
