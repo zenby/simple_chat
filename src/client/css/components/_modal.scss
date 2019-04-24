@@ -1,0 +1,44 @@
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  display: none;
+  overflow: auto;
+  background-color: $color-black-opacity;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  .modal_content {
+    margin: auto;
+    max-width: 100vw;
+    max-height: 100vh;
+    display: block;
+    border-radius: 5px;
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.3s;
+    animation-name: zoom;
+    animation-duration: 0.3s;
+  }
+
+  .close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: $color-grey-light2;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+
+    &:hover,
+    &:focus {
+      color: $color-grey-light1;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}

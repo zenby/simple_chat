@@ -1,0 +1,16 @@
+.settings_container {
+  max-width: 260px;
+  color: $color-font1;
+  position: fixed;
+  right: 60px;
+  top: 20px;
+
+  & > * {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  & > span.settings_title {
+    text-decoration: underline;
+  }
+}

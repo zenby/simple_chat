@@ -1,0 +1,109 @@
+ul#messages {
+  margin: 0 auto;
+  width: 1200px;
+  padding: 20px 40px 0;
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+
+  & li {
+    margin-top: 12px;
+    max-width: 50%;
+    min-width: 200px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    color: $color-black;
+
+    &.action_message {
+      align-self: center;
+      text-align: center;
+      color: $color-font2;
+    }
+
+    &.self_message {
+      align-self: flex-end;
+
+      & > .message_label {
+        text-align: end;
+      }
+    }
+  }
+}
+
+.message_label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  color: $color-font1;
+}
+
+.message_content {
+  margin: 1px;
+  min-width: 50px;
+  padding: 8px 12px;
+  position: relative;
+  box-shadow: 0 0 36px 0 $color-message-shadow;
+
+  &:last-child {
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+
+    &:nth-child(2) {
+      padding: 10px 12px;
+    }
+  }
+}
+
+.partner_message {
+  align-self: flex-start;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-image: linear-gradient(to right, $color-message1, $color-message2);
+
+  & > .delete_icon {
+    left: -20px;
+  }
+}
+
+.my_message {
+  align-self: flex-end;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-image: linear-gradient(
+    to right,
+    $color-self-message1,
+    $color-self-message2,
+    $color-self-message3
+  );
+
+  & > .delete_icon {
+    right: -20px;
+  }
+}
+
+.message_image {
+  max-width: 500px;
+  max-height: 500px;
+  transition: 0.3s;
+  padding: 8px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.delete_icon {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 8px;
+
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+}

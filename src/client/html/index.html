@@ -2,24 +2,39 @@
 <html>
   <head>
     <title>Chat</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Arimo&subset=cyrillic,cyrillic-ext,latin,latin-ext"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <body>
-    <div class="input-container">
-      <input class="user_input" placeholder="username" maxlength="100" />
+    <div id="background"></div>
+    <div class="message_input_container">
       <input class="message_input" placeholder="message" maxlength="10000" />
       <button id="send-button">Send</button>
     </div>
-    <div class="room_container">
-      Current users:
+    <div class="settings_container">
+      <span class="settings_title">
+        Online:
+      </span>
       <ol class="users"></ol>
-      <div>Current room:</div>
+      <span class="settings_title">
+        Your name:
+      </span>
+      <input class="user_input" placeholder="username" maxlength="100" />
+      <span class="settings_title">
+        Current room:
+      </span>
       <select>
         <option value="0">Main channel</option>
         <option value="1">Stored messages</option>
         <option value="2">Private room</option>
       </select>
       <div>
-        Is owl?
+        <span class="settings_title">
+          Is owl notification?
+        </span>
         <input type="checkbox" class="audio" checked="true" />
       </div>
     </div>

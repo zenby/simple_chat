@@ -1,0 +1,12 @@
+#background {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background-image: linear-gradient(
+      to top left,
+      $color-background1,
+      $color-background2
+    ),
+    url('../img/background.png');
+  background-size: cover;
+}

@@ -21,7 +21,7 @@ export function checkImage(url, successCallback) {
 export function getImageBySource(href) {
   const image = document.createElement('img');
   image.src = href;
-  image.classList.add('user_image');
+  image.classList.add('message_image');
 
   return image;
 }

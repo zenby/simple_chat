@@ -8,7 +8,7 @@ export function closeModal() {
 export function modalPopupOnImageClick(ev) {
   if (
     ev.target.tagName === 'IMG' &&
-    ev.target.classList.contains('user_image')
+    ev.target.classList.contains('message_image')
   ) {
     modal.style.display = 'flex';
     modalImg.src = ev.target.src;
