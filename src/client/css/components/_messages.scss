@@ -51,15 +51,15 @@ ul#messages {
 }
 
 .message_content {
-  margin: 0.14rem;
+  margin: 0.1538rem;
   min-width: 50px;
   padding: 8px 12px;
   position: relative;
   box-shadow: 0 0 36px 0 $color-message-shadow;
 
   &:last-child {
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: $default-border-radius-md;
+    border-bottom-right-radius: $default-border-radius-md;
 
     &:nth-child(2) {
       padding: 10px 12px;
@@ -69,8 +69,8 @@ ul#messages {
 
 .partner_message {
   align-self: flex-start;
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  border-top-right-radius: $default-border-radius-md;
+  border-bottom-right-radius: $default-border-radius-md;
   background-image: linear-gradient(to right, $color-message1, $color-message2);
 
   & > .delete_icon {
@@ -80,8 +80,8 @@ ul#messages {
 
 .my_message {
   align-self: flex-end;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  border-top-left-radius: $default-border-radius-md;
+  border-bottom-left-radius: $default-border-radius-md;
   background-image: linear-gradient(
     to right,
     $color-self-message1,

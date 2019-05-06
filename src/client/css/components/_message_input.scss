@@ -6,7 +6,7 @@
   transform: translate(-50%);
   z-index: 1;
   display: flex;
-  border-radius: 20px;
+  border-radius: $default-border-radius-lg;
 
   &:before {
     content: '';
@@ -35,8 +35,8 @@
 .message_input {
   margin: 2px;
   flex: 3;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-top-left-radius: $default-border-radius-lg;
+  border-bottom-left-radius: $default-border-radius-lg;
 
   &:focus {
     margin: 0;
@@ -50,8 +50,8 @@
   min-width: 80px;
   padding: 10px;
   border: none;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-top-right-radius: $default-border-radius-lg;
+  border-bottom-right-radius: $default-border-radius-lg;
   background: $color-primary;
   text-align: center;
 }
