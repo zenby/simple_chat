@@ -26,6 +26,12 @@
   }
 }
 
+@media screen and (max-width: 800px) {
+  .message_input_container {
+    width: 95%;
+  }
+}
+
 .message_input {
   margin: 2px;
   flex: 3;
@@ -41,11 +47,18 @@
 }
 
 #send-button {
-  width: 80px;
+  min-width: 80px;
   padding: 10px;
   border: none;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   background: $color-primary;
   text-align: center;
+}
+
+input,
+select,
+option,
+button {
+  font-size: inherit;
 }

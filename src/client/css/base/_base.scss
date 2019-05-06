@@ -2,13 +2,24 @@
 *::after,
 *::before {
   margin: 0;
-  padding: 0;
 }
 
 html {
-  font-size: 13px;
+  font-size: 81.25%;
+}
+
+@media screen and (max-width: 1024px) {
+  html {
+    font-size: 150%;
+  }
+}
+
+@media screen and (max-device-width: 600px) {
+  html {
+    font-size: 200%;
+  }
 }
 
 body {
-  padding-bottom: 60px;
+  padding-bottom: 4rem;
 }
